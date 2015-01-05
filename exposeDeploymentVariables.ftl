@@ -3,6 +3,7 @@
 	<#assign result =[] >
 	<#assign result = result + ["Complex Object: " + obj] >
 	<#assign prefix=".vars.${obj}" >
+	<#if prefix?eval??>
 	<#if prefix?eval?is_hash_ex >
 		<#list prefix?eval?keys as key>
 			<#assign basevar="${obj}.${key}" >
@@ -29,7 +30,7 @@
 	<#else>
 		<#assign result = result + [" Cannot be parsed as {" + obj + "} is not a hash or simple property"] >
 	</#if>
-
+	</#if>
 	<#return result>
 </#function>
 
