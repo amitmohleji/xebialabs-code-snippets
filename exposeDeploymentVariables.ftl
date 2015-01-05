@@ -17,6 +17,9 @@
 					<#if valuevar?is_string || valuevar?is_boolean || valuevar?is_number>
 						<#assign result = result + [r"PROPERTY: ${" + basevar + r"}  ||  VALUE: " + valuevar?string] >
 					</#if>
+					<#if valuevar?is_enumerable>
+						<#assign result = result + [r"PROPERTY: ${" + basevar + r"} || TYPE : LIST "] >
+					</#if>
 					<#if valuevar?is_hash_ex >
 						<#if level < depth >
 							<#assign result = result + dig(basevar,level + 1,depth, captureMethod) > 
