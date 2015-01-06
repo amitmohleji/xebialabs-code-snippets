@@ -96,3 +96,8 @@ VARIABLE LISTING TILL DEPTH: 0
 		METHOD: ${deployed.getDeployable(...)}
 		METHOD: ${deployed.toString(...)}
 
+
+exposeJythonVariables.py
+========================
+This code snippet helps expose all the jython variables available while using Jython Step in XL-rules
+
