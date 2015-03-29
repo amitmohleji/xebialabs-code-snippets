@@ -20,7 +20,7 @@ def importSecurityFromJSON(obj):
 	for role in assignments.keys():
 		for id in range(0,assignments.get(role).length()):
 			print "assigning role:" + role + "_" + assignments.get(role).getString(id)
-			security.assignRole(role, assignments.get(role).getString(id))
+			security.assignRole(role, [assignments.get(role).getString(id)])
 	permissions = obj.get("permissions")
 	for role in permissions.keys():
 		for ci in permissions.get(role).keys():
