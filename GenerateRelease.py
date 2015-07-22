@@ -77,7 +77,7 @@ changeTaskAPIUrl = servicenowBaseTableURL + changeTaskTableName + '?sysparm_quer
 servicenowResponse = XLRequest(changeTaskAPIUrl, 'GET', content, credentials['username'], credentials['password'], 'application/json').send()
 
 preCond = "i = [ count for count,item in enumerate(phase.getTasks()) if task == item ]\n" + \
-"task.getPythonScript().setProperty(\'body\',\'{state:3,work_notes:\\\'\' + phase.getTasks()[i[0]-1].comments[-1].getText() + \'\\\'\')\n" + \
+"task.getPythonScript().setProperty(\'body\',\'{state:3,work_notes:\\\'\' + phase.getTasks()[i[0]-1].comments[-1].getText() + \'\\\'}\')\n" + \
 "taskApi.updateTask(task.id,task)\n" + \
 "result = True"
 
