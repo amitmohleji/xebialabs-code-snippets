@@ -79,29 +79,37 @@ else:
 changeTaskAPIUrl = servicenowBaseTableURL + changeTaskTableName + '?sysparm_query=change_request=' + change_request_sysid + '^ORDERBYnumber'
 servicenowResponse = XLRequest(changeTaskAPIUrl, 'GET', content, credentials['username'], credentials['password'], 'application/json').send()
 
+
+#Below preCond is deprecated. It is now being done through the extended step
 preCond = "i = [ count for count,item in enumerate(phase.getTasks()) if task == item ]\n" + \
 "task.getPythonScript().setProperty(\'body\',\'{state:3,work_notes:\\\'\' + phase.getTasks()[i[0]-1].comments[-1].getText() + \'\\\'}\')\n" + \
 "taskApi.updateTask(task.id,task)\n" + \
 "result = True"
 
+
 if servicenowResponse.status == RECORD_CHECK_STATUS:
     data = json.loads(servicenowResponse.read())
     status = data["result"]
     
-    for item in status:
+    for counter,item in enumerate(status):
     	# first look at the phase creation criteria field .. 'state' used for now
     	phaseName = str(item['state'])
     	existingPhaseList = phaseApi.searchPhasesByTitle(phaseName, release.id)
     	
-        # Adding a phase
-        if len(existingPhaseList) <= 0:
-    		existingPhaseList.append(releaseApi.addPhase(release.id,phaseName))
-        phaseId = existingPhaseList[0].id
+        # Only adding newer Tasks to the release
+        if counter+1 > int(baseCount):
+        
+            # Adding a phaseName
+            if len(existingPhaseList) <= 0:
+        		existingPhaseList.append(releaseApi.addPhase(release.id,phaseName))
+            phaseId = existingPhaseList[0].id
 
-        createAutomatedTask(phaseId,"webhook.JsonWebhook", "Start " + str(item['number']),None,{"URL":updateChangeTaskAPIURL + str(item['sys_id']), "method":"PUT", "body":"{state:1,work_notes:'Updated By XLRelease'}", "username": credentials['username'], "password":credentials['password']})
-        createManualTask(phaseId,"xlrelease.Task", str(item['number']) + "-" +  str(item['short_description']), {'startDate':item['expected_start'],'endDate':item['work_end'],'description':'\''+ item['description'] + '\''})
-        createAutomatedTask(phaseId,"webhook.JsonWebhook", "Complete " + str(item['number']),preCond,{"URL":updateChangeTaskAPIURL + str(item['sys_id']), "method":"PUT", "body":"{state:3,work_notes:'Updated By XLRelease'}", "username": credentials['username'], "password":credentials['password']})
-    createAutomatedTask(phaseId,"servicenow.GenerateRelease", "Update Plan From ServiceNow",None,{})
+            createAutomatedTask(phaseId,"webhook.JsonWebhook", "Start " + str(item['number']),None,{"URL":updateChangeTaskAPIURL + str(item['sys_id']), "method":"PUT", "body":"{state:1,work_notes:'Updated By XLRelease'}", "username": credentials['username'], "password":credentials['password']})
+            createManualTask(phaseId,"xlrelease.Task", str(item['number']) + "-" +  str(item['short_description']), {'startDate':item['expected_start'],'endDate':item['work_end'],'description':'\''+ item['description'] + '\''})
+            createAutomatedTask(phaseId,"servicenow.CompleteTaskJsonWebhook", "Complete " + str(item['number']),None,{"URL":updateChangeTaskAPIURL + str(item['sys_id']), "method":"PUT","body":"{state:3,work_notes:'Updated By XLRelease'}", "username": credentials['username'], "password":credentials['password']})
+
+    if counter+1 > int(baseCount):
+        createAutomatedTask(phaseId,"servicenow.GenerateRelease", "Update Plan From ServiceNow",None,{'baseCount':str(counter+1)})
     
 
 else:
