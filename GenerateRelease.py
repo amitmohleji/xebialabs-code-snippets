@@ -18,8 +18,11 @@ def createManualTask(phaseId, taskTypeValue, title, propertyMap):
     parentTask.setTitle(title)
     sdf = SimpleDateFormat("yyyy-MM-dd hh:mm:ss")
     for item in propertyMap:
-        if propertyMap[item] is not None and len(propertyMap[item]) != 0:
-            parentTask.setProperty(item,sdf.parse(propertyMap[item])) 
+        if item.lower().find("date") > -1:
+            if propertyMap[item] is not None and len(propertyMap[item]) != 0:
+                parentTask.setProperty(item,sdf.parse(propertyMap[item])) 
+        else:
+            parentTask.setProperty(item,propertyMap[item]) 
     
     #parentTask.setStartDate(sdf.parse(startDate))
     taskApi.addTask(phaseId,parentTask)
@@ -96,7 +99,7 @@ if servicenowResponse.status == RECORD_CHECK_STATUS:
         phaseId = existingPhaseList[0].id
 
         createAutomatedTask(phaseId,"webhook.JsonWebhook", "Start " + str(item['number']),None,{"URL":updateChangeTaskAPIURL + str(item['sys_id']), "method":"PUT", "body":"{state:1,work_notes:'Updated By XLRelease'}", "username": credentials['username'], "password":credentials['password']})
-        createManualTask(phaseId,"xlrelease.Task", str(item['number']) + "-" +  str(item['short_description']), {'startDate':item['expected_start'],'endDate':item['work_end']})
+        createManualTask(phaseId,"xlrelease.Task", str(item['number']) + "-" +  str(item['short_description']), {'startDate':item['expected_start'],'endDate':item['work_end'],'description':'\''+ item['description'] + '\''})
         createAutomatedTask(phaseId,"webhook.JsonWebhook", "Complete " + str(item['number']),preCond,{"URL":updateChangeTaskAPIURL + str(item['sys_id']), "method":"PUT", "body":"{state:3,work_notes:'Updated By XLRelease'}", "username": credentials['username'], "password":credentials['password']})
     createAutomatedTask(phaseId,"servicenow.GenerateRelease", "Update Plan From ServiceNow",None,{})
     
