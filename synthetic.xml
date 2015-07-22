@@ -1,0 +1,18 @@
+<synthetic xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xmlns="http://www.xebialabs.com/deployit/synthetic"
+           xsi:schemaLocation="http://www.xebialabs.com/deployit/synthetic synthetic.xsd">
+
+    <type type="servicenow.GenerateRelease" extends="xlrelease.PythonScript">
+        
+        <property name="iconLocation" default="servicenow/servicenow.png" hidden="true" />
+
+        <property name="servicenowServer" category="input" label="Server" referenced-type="servicenow.Server" kind="ci"/>
+        <property name="changeRecordNumber" category="input" label="Change Record Number for Application" default="${changeRecordNumber}"/> 
+    </type>
+
+    <type-modification type="servicenow.Server" >
+        <property name="changeRecordTableName" label="Change Record Table Name (Required for Generate Release)" required="true" default="change_request"/>
+        <property name="changeTaskTableName" label="Change Task Table Name (Required for Generate Release)" required="true" default="change_task" />
+    </type-modification>
+        
+</synthetic>
