@@ -101,3 +101,11 @@ exposeJythonVariables.py
 ========================
 This code snippet helps expose all the jython variables available while using Jython Step in XL-rules
 
+checkXLDPermissions.py
+======================
+This code snippet can be used in XLR in a script task to validate the credentials of all XLD tasks in the release to make sure they are good for deploy#initial permission
+![checkXLDFromXLR.png](checkXLDFromXLR.png)
+
+
+
+
