@@ -1,0 +1,98 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.priceline</groupId>
+	<artifactId>hotel-gateway</artifactId>
+	<packaging>dar</packaging>
+	<name>Dar Packaging</name>
+ <version>1.2.13</version>	
+ <properties>
+  <deployit.username>admin</deployit.username>
+  <deployit.password>admin</deployit.password>
+  <deployit.server>localhost</deployit.server>
+  <deployit.port>4516</deployit.port>
+</properties>
+<pluginRepositories>
+ <pluginRepository>
+  <id>xebialabs-maven2</id>
+  <url>https://dist.xebialabs.com/public/maven2/</url>
+</pluginRepository>
+<pluginRepository>
+  <id>knopflerfish</id>
+  <url>http://www.knopflerfish.org/maven2</url>
+</pluginRepository>
+</pluginRepositories>
+
+<build>
+  <!-- To define the plugin version in your parent POM -->
+  <pluginManagement>
+    <plugins>
+      <plugin>
+        <groupId>com.xebialabs.xldeploy</groupId>
+        <artifactId>xldeploy-maven-plugin</artifactId>
+        <version>5.0.1</version>
+      </plugin>
+    </plugins>
+  </pluginManagement>
+  <!-- To use the plugin goals in your POM or parent POM -->
+  <plugins>
+    <plugin>
+      <groupId>com.xebialabs.xldeploy</groupId>
+      <artifactId>xldeploy-maven-plugin</artifactId>
+      <version>5.0.1</version>
+      <executions>
+        <execution>
+          <id>deployit-plugin-test</id>
+          <phase>pre-integration-test</phase>
+          <goals>
+            <goal>deploy</goal>
+          </goals>
+        </execution>
+      </executions>
+      <extensions>true</extensions> <!-- tells maven the plugin contains extensions -->
+
+      <configuration>
+        <username>${deployit.username}</username>
+        <password>${deployit.password}</password>
+        <serverAddress>${deployit.server}</serverAddress>
+        <port>${deployit.port}</port>
+        <timestampedVersion>false</timestampedVersion>
+        <deploymentPackageProperties>
+          <!-- Enter any deployment package level properties as <property>value</property> -->
+          <orchestrator>default</orchestrator>
+          <satisfiesReleaseNotes>true</satisfiesReleaseNotes>
+        </deploymentPackageProperties>
+        <deployables>
+
+          <!-- 1. Regular artifact definition from build workspace -->
+         <jee.War name="petclinic" groupId="org.springframework.samples" artifactId="spring-petclinic" artifactType="war"/>
+
+          <!-- 2. Nexus artifact definition - if you use the definition below, you don't need to specify dependency down below-->
+          <!-- 
+          <jee.War name="petclinic">
+            <fileUri>maven:org.springframework.samples:spring-petclinic:war:1.0.8-SNAPSHOT</fileUri>
+          </jee.War>
+          -->
+
+          
+
+        </deployables>
+      </configuration>
+    </plugin>
+  </plugins>
+</build>
+<dependencies>
+  <dependency>
+    <groupId>org.springframework.samples</groupId>
+    <artifactId>spring-petclinic</artifactId>    
+    <version>1.0.8-SNAPSHOT</version>
+    <type>war</type>
+    <scope>provided</scope>
+  </dependency> 
+  <dependency>
+    <groupId>mysql</groupId>
+    <artifactId>mysql-connector-java</artifactId>
+    <version>5.1.13</version>
+    <scope>provided</scope>
+  </dependency>
+</dependencies>  	
+</project>
