@@ -46,11 +46,11 @@
   <distributionManagement>
     <repository>
       <id>central</id>
-      <url>http://maven:8082/nexus/content/repositories/libs-releases-local</url>
+      <url>https://maven:8082/nexus/content/repositories/libs-releases-local</url>
     </repository>
     <snapshotRepository>
       <id>snapshots</id>
-      <url>http://maven:8082/nexus/content/repositories/libs-snapshots-local</url>
+      <url>https://maven:8082/nexus/content/repositories/libs-snapshots-local</url>
     </snapshotRepository>
   </distributionManagement>
   <properties>
@@ -76,28 +76,28 @@
         <enabled>true</enabled>
       </snapshots>
       <id>central</id>
-      <url>http://maven:8082/nexus/content/groups/repo</url>
+      <url>https://maven:8082/nexus/content/groups/repo</url>
     </repository>
     <repository>
       <snapshots>
         <enabled>true</enabled>
       </snapshots>
       <id>plugins-releases-local</id>
-      <url>http://maven:8082/nexus/content/repositories/plugins-releases-local</url>
+      <url>https://maven:8082/nexus/content/repositories/plugins-releases-local</url>
     </repository>
     <repository>
       <releases>
         <enabled>true</enabled>
       </releases>
       <id>snapshots</id>
-      <url>http://maven:8082/nexus/content/groups/repo</url>
+      <url>https://maven:8082/nexus/content/groups/repo</url>
     </repository>
     <repository>
       <releases>
         <enabled>true</enabled>
       </releases>
       <id>snapshots1</id>
-      <url>http://maven:8082/nexus/content/repositories/ext-snapshots-local</url>
+      <url>https://maven:8082/nexus/content/repositories/ext-snapshots-local</url>
     </repository>
   </repositories>
   <!--<pluginRepositories>
@@ -106,14 +106,14 @@
         <enabled>true</enabled>
       </snapshots>
       <id>central</id>
-      <url>http://maven:8082/nexus/content/groups/repo</url>
+      <url>https://maven:8082/nexus/content/groups/repo</url>
     </pluginRepository>
     <pluginRepository>
       <releases>
         <enabled>true</enabled>
       </releases>
       <id>snapshots</id>
-      <url>http://maven:8082/nexus/content/groups/repo</url>
+      <url>https://maven:8082/nexus/content/groups/repo</url>
     </pluginRepository>
   </pluginRepositories> -->
   <build>
