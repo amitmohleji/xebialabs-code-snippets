@@ -18,7 +18,7 @@
 </pluginRepository>
 <pluginRepository>
   <id>knopflerfish</id>
-  <url>http://www.knopflerfish.org/maven2</url>
+  <url>https://www.knopflerfish.org/maven2</url>
 </pluginRepository>
 </pluginRepositories>
 
